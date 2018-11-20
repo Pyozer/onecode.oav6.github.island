@@ -7,7 +7,7 @@ const Database = require('./data/database')
 const { flash } = require('./utils/flash')
 
 const indexRouter = require('./routes/index')
-const usersRouter = require('./routes/users')
+const searchRouter = require('./routes/search')
 const authRouter = require('./routes/auth')
 
 const app = express()
@@ -24,9 +24,10 @@ app.use(express.json())
 app.use(express.urlencoded({ extended: false }))
 app.use(express.static(path.join(__dirname, 'public')))
 
-app.use(session(
-  { secret: 'VerySecureKey', cookie: { maxAge: 60000 }}
-))
+app.use(session({
+  secret: 'VerySecureKey',
+  cookie: { maxAge: 60000 }
+}))
 
 // Add flash messages on all routes
 app.use((req, res, next) => {
@@ -36,12 +37,7 @@ app.use((req, res, next) => {
 
 app.use('/', indexRouter)
 app.use('/', authRouter)
-
-// TEMPORAIRE JUST FOR DEV
-app.use('/resetdb', (req, res) => {
-  Database.instance.sync({ force: true});
-  res.send("database reset")
-})
+app.use('/', searchRouter)
 
 // catch 404 and forward to error handler
 app.use(function (req, res, next) {

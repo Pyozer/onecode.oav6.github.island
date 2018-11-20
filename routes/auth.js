@@ -91,7 +91,7 @@ authRouter.post('/signUp', async (req, res) => {
 
   req.session.user = user
 
-  setFlash(req, 'success', 'You have been successfully signUped.')
+  setFlash(req, 'success', 'You have been successfully registered.')
   res.redirect('/dashboard')
 })
 
