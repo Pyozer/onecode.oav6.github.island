@@ -1,5 +1,6 @@
-const Sequelize = require('sequelize');
-const { UserModel } = require('../models/user');
+const Sequelize = require('sequelize')
+const { UserModel } = require('../models/user')
+const { GithubModel } = require('../models/github')
 
 const sequelize = new Sequelize('database', 'username', 'password', {
     host: 'localhost',
@@ -16,6 +17,7 @@ const sequelize = new Sequelize('database', 'username', 'password', {
     operatorsAliases: false
 });
 const User = sequelize.define('user', UserModel)
+const Github = sequelize.define('github', GithubModel)
 
 function whereLower(column, value) {
     return sequelize.where(
