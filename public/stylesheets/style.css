@@ -26,3 +26,12 @@ h1.title, #result {
 .is-rounded {
     border-radius: 100px;
 }
+
+.overflow-y-only {
+    overflow-x: hidden;
+    overflow-y: auto;
+}
+
+.overflow-y-hidden {
+    overflow-y: auto;
+}
