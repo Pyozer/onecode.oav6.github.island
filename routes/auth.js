@@ -1,13 +1,13 @@
-const express = require('express');
+const express = require('express')
 const Database = require('../data/database')
 const { Op } = require('sequelize')
 const { setFlash, flash } = require('../utils/flash')
-const authRouter = express.Router();
+const authRouter = express.Router()
 
 authRouter.get('/signIn', (req, res) => {
   if (req.session.user) {
     res.redirect('/dashboard')
-    return;
+    return
   }
 
   res.render('signIn', { title: "Sign In" })
@@ -21,7 +21,7 @@ authRouter.post('/signIn', async (req, res) => {
   if (!nickname || !password) {
     setFlash(req, 'danger', 'You must fill all input fields !')
     res.redirect('/signIn')
-    return;
+    return
   }
 
   const user = await Database.User.findOne({
@@ -35,7 +35,7 @@ authRouter.post('/signIn', async (req, res) => {
   if (!user) {
     setFlash(req, 'danger', 'Nickname or password is incorrect !')
     res.redirect('/signIn')
-    return;
+    return
   }
   req.session.user = user
 
@@ -46,7 +46,7 @@ authRouter.post('/signIn', async (req, res) => {
 authRouter.get('/signUp', (req, res) => {
   if (req.session.user) {
     res.redirect('/dashboard')
-    return;
+    return
   }
 
   res.render('signUp', { title: "Sign Up" })
@@ -63,7 +63,7 @@ authRouter.post('/signUp', async (req, res) => {
   if (!user.nickname || !user.email || !user.password || !user.fullname) {
     setFlash(req, 'danger', 'You must fill all input fields !')
     res.redirect('/signUp')
-    return;
+    return
   }
 
   const isNickname = await Database.User.findOne({ where: { $col: Database.whereLower('nickname', user.nickname) } })
@@ -78,7 +78,7 @@ authRouter.post('/signUp', async (req, res) => {
       setFlash(req, 'danger', 'A user with the same nickname already exists !')
 
     res.redirect('/signUp')
-    return;
+    return
   }
 
   const created = await Database.User.create({

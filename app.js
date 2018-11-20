@@ -31,9 +31,9 @@ app.use(session({
 
 // Add flash messages on all routes
 app.use((req, res, next) => {
-  res.locals.flash = flash(req);
-  next();
-});
+  res.locals.flash = flash(req)
+  next()
+})
 
 app.use('/', indexRouter)
 app.use('/', authRouter)

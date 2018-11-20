@@ -15,7 +15,8 @@ const sequelize = new Sequelize('database', 'username', 'password', {
 
     storage: './data/oav06.db',
     operatorsAliases: false
-});
+})
+
 const User = sequelize.define('user', UserModel)
 const Github = sequelize.define('github', GithubModel)
 
