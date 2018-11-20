@@ -1,22 +1,30 @@
 <% include ./partials/header %>
 
 <div class="container h-100">
-    <div class="row h-100 justify-content-center align-items-center">
-        <div class="col-12 col-sm-8 col-lg-5 text-center">
-            <h1 class="h1 mb-5">Search user</h1>
+    <div class="row h-100 justify-content-center">
+        <div class="col-12 col-sm-8 col-lg-5 h-100 text-center py-5">
+            <div class="d-flex flex-column mh-100" style="overflow-y: hidden">
+                <div>
+                    <h1 class="h1 mb-5">Search user</h1>
 
-            <% include ./partials/message_flash %>
+                    <% include ./partials/message_flash %>
 
-            <form action="/search" method="POST">
-                <div class="d-flex align-items-center">
-                    <div class="flex-fill py-1">
-                        <input type="text" class="form-control is-rounded" name="nickname" placeholder="Nickname" required>
-                    </div>
-                    <div>
-                        <input type="submit" class="btn btn-outline-primary is-rounded ml-3 px-4" value="Search" />
-                    </div>
+                    <form action="/search" method="GET">
+                        <div class="d-flex align-items-center">
+                            <div class="flex-fill py-1">
+                                <input type="text" class="form-control is-rounded" name="search" placeholder="Nickname"
+                                    required>
+                            </div>
+                            <div>
+                                <input type="submit" class="btn btn-outline-primary is-rounded ml-3 px-4" value="Search" />
+                            </div>
+                        </div>
+                    </form>
                 </div>
-            </form>
+                <div class="flex-grow-1" style="overflow-y: auto">
+                    <% include ./partials/search_list %>
+                </div>
+            </div>
         </div>
     </div>
 </div>

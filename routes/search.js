@@ -1,9 +1,18 @@
-const express = require('express');
-const router = express.Router();
+const express = require('express')
+const Database = require('../data/database')
+const router = express.Router()
 
-/* GET users listing. */
-router.get('/search', (req, res, next) => {
-  res.render('search', { title: 'Search' });
-});
+router.get('/search', async (req, res, next) => {
+  let users;
+  if (req.query.search) {
+    users = await Database.Github.findAll({
+      where: {
+        login: Database.instance.where(Database.instance.fn('LOWER', Database.instance.col('login')), 'LIKE', '%' + req.query.search + '%')
+      }
+    })
+  }
 
-module.exports = router;
+  res.render('search', { title: 'Search', users: users })
+})
+
+module.exports = router

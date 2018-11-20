@@ -1,0 +1,14 @@
+<div class="card">
+    <div class="card-body p-4 text-left">
+        <div class="d-flex mb-3">
+            <div class="mr-4">
+                <img class="shadow rounded" width="54" src="<%- gitUser.avatar_url %>" alt="<%= gitUser.name %>">
+            </div>
+            <div>
+                <%= gitUser.name %><br />
+                @<%= gitUser.login %>
+            </div>
+        </div>
+        <%= gitUser.bio %>
+    </div>
+</div>

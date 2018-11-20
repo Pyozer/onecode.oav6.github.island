@@ -1,0 +1,9 @@
+<% if (locals.users) { %>
+<div class="row mt-4">
+    <% for(const gitUser of users) { %>
+        <div class="col-12 my-2">
+            <% include ./search_result %>
+        </div>
+    <% } %>
+</div>
+<% } %>
