@@ -1,3 +1,8 @@
+html, body {
+    min-width: 100%;
+    min-height: 100%;
+    height: 100%;
+}
 form .input {
     max-width: 350px;
 }
@@ -6,14 +11,18 @@ h1.title, #result {
 }
 
 .danger {
-    color: red
+    color: red;
 }
 .success {
-    color: green
+    color: green;
 }
 .info {
-    color: lightblue
+    color: lightblue;
 }
 .warning {
-    color: yellow
+    color: yellow;
+}
+
+.is-rounded {
+    border-radius: 100px;
 }

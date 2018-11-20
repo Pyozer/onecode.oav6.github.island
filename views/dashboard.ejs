@@ -1,14 +1,58 @@
 <% include ./partials/header %>
 
-<section class="section">
-  <div class="container is-fullheight is-dark">
-    <h1 class="title is-2">Welcome
-      <%= user.nickname %> !</h1>
 
-    <% include ./partials/message_flash %>
-
-    <a type="button" class="button is-rounded" href="/logout">Logout</a>
+<div class="container mt-5">
+  <div class="d-flex">
+    <div class="flex-grow-1">
+      <h1 class="h1">
+        Welcome
+        <%= (gitUser && gitUser.login) ? gitUser.login : user.nickname %> !
+      </h1>
+    </div>
+    <div>
+        <a class="btn btn-danger is-rounded" href="/logout">Logout</a>
+    </div>
   </div>
-</section>
+
+  <div class="row mt-5">
+    <div class="col-12 col-lg-6">
+      <% include ./partials/message_flash %>
+
+      <% if (gitUser) { %>
+      <div class="card">
+        <div class="card-body p-4">
+          <div class="d-flex mb-3">
+            <div class="mr-4">
+              <img class="shadow rounded" width="54" src="<%- gitUser.avatar_url %>" alt="<%= gitUser.name %>">
+            </div>
+            <div>
+              <%= gitUser.name %><br />
+              @
+              <%= gitUser.login %>
+            </div>
+          </div>
+          <%= gitUser.bio %>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <h2 class="h2 mt-5 mb-4">Your repositories</h2>
+  <div class="row">
+    <% for(const repo of gitUserRepos) { %>
+    <% include ./partials/repo_card %>
+    <% } %>
+  </div>
+
+  <% } else { %>
+  <article class="message is-info">
+    <div class="message-body">
+      Impossible to retrieve information from your github account. There is no account with
+      <%= user.nickname %> !
+      You can create an account on Github <a href="https://github.com/join" target="_blank"><u>here</u></a>
+    </div>
+  </article>
+  <% } %>
+</div>
 
 <% include ./partials/footer %>
