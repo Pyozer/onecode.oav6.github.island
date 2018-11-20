@@ -1,9 +1,9 @@
 const express = require('express')
-const Database = require('../data/database')
-const { Op } = require('sequelize')
-const { setFlash, flash } = require('../utils/flash')
+const User = require('../controllers/user')
+const { setFlash } = require('../utils/flash')
 const authRouter = express.Router()
 
+/* GET signIn */
 authRouter.get('/signIn', (req, res) => {
   if (req.session.user) {
     res.redirect('/dashboard')
@@ -14,6 +14,7 @@ authRouter.get('/signIn', (req, res) => {
   req.session.errorMsg = null
 })
 
+/* POST signIn */
 authRouter.post('/signIn', async (req, res) => {
   const nickname = req.body.nickname
   const password = req.body.password
@@ -24,21 +25,13 @@ authRouter.post('/signIn', async (req, res) => {
     return
   }
 
-  const user = await Database.User.findOne({
-    where: {
-      $col: Database.whereLower('nickname', nickname),
-      password: password,
-    },
-    attributes: ['id', 'nickname', 'email', 'password', 'fullname']
-  })
-
+  const user = await User.findUser(nickname, password)
   if (!user) {
     setFlash(req, 'danger', 'Nickname or password is incorrect !')
     res.redirect('/signIn')
     return
   }
   req.session.user = user
-
   res.redirect('/dashboard')
 })
 
@@ -48,10 +41,10 @@ authRouter.get('/signUp', (req, res) => {
     res.redirect('/dashboard')
     return
   }
-
   res.render('signUp', { title: "Sign Up" })
 })
 
+/* POST signUp */
 authRouter.post('/signUp', async (req, res) => {
   const user = {
     nickname: req.body.nickname,
@@ -66,13 +59,13 @@ authRouter.post('/signUp', async (req, res) => {
     return
   }
 
-  const isNickname = await Database.User.findOne({ where: { $col: Database.whereLower('nickname', user.nickname) } })
-  const isEmail = await Database.User.findOne({ where: { $col: Database.whereLower('email', user.email) } })
+  const nicknameCount = await User.countNickName(user.nickname)
+  const emailCount = await User.countEmail(user.email)
 
-  if (isNickname || isEmail) {
-    if (isNickname && isEmail)
+  if (nicknameCount > 0 || emailCount > 0) {
+    if (nicknameCount > 0 && emailCount > 0)
       setFlash(req, 'danger', 'Your nickname and email address are already taken !')
-    else if (isEmail)
+    else if (emailCount > 0)
       setFlash(req, 'danger', 'A user with the same email address already exists !')
     else
       setFlash(req, 'danger', 'A user with the same nickname already exists !')
@@ -81,12 +74,7 @@ authRouter.post('/signUp', async (req, res) => {
     return
   }
 
-  const created = await Database.User.create({
-    nickname: user.nickname,
-    email: user.email,
-    password: user.password,
-    fullname: user.fullname
-  })
+  const created = await User.insert(user)
   user.id = created.id
 
   req.session.user = user
@@ -95,6 +83,7 @@ authRouter.post('/signUp', async (req, res) => {
   res.redirect('/dashboard')
 })
 
+/* GET logout */
 authRouter.get('/logout', (req, res, next) => {
   if (req.session.user) {
     req.session.user = null

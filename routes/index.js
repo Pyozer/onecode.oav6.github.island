@@ -1,7 +1,5 @@
 const express = require('express')
-const request = require('request-promise-native')
-const Database = require('../data/database')
-const { GITHUB_API_KEY } = require('../api_keys')
+const Github = require('../controllers/github_api')
 const { setFlash } = require('../utils/flash')
 const router = express.Router()
 
@@ -18,31 +16,17 @@ router.get('/dashboard', async (req, res, next) => {
     return
   }
 
-  const options = {
-    uri: `https://api.github.com/users/${user.nickname}`,
-    qs: { access_token: GITHUB_API_KEY },
-    headers: { 'User-Agent': 'Request-Promise' },
-    json: true // Automatically parses the JSON string in the response
-  }
-
-  let resultUser
-  let resultUserRepos
+  let options = { title: 'Dashboard', user: user, gitUser: null, gitUserRepos: null }
   try {
-    resultUser = await request(options)
-    options.uri += '/repos'
-    resultUserRepos = await request(options)
-    resultUserRepos.sort((a, b) => {
-      const dateA = new Date(a.updated_at).getTime()
-      const dateB = new Date(b.updated_at).getTime()
-      return dateA > dateB ? -1 : 1
-    })
+    const { gitUser, gitUserRepos } = await Github.getUserData(user.nickname)
 
-    await Database.Github.upsert(resultUser, {
-      where: { 'login': resultUser.login }
-    })
+    await Github.insertOrUpdate(gitUser)
+
+    options.gitUser = gitUser
+    options.gitUserRepos = gitUserRepos
   } catch (_) { }
 
-  res.render('dashboard', { title: 'Dashboard', user: req.session.user, gitUser: resultUser, gitUserRepos: resultUserRepos })
+  res.render('dashboard', options)
 })
 
 module.exports = router

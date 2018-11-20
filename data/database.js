@@ -20,16 +20,21 @@ const sequelize = new Sequelize('database', 'username', 'password', {
 const User = sequelize.define('user', UserModel)
 const Github = sequelize.define('github', GithubModel)
 
-function whereLower(column, value) {
+const whereLower = (column, value) => {
     return sequelize.where(
         sequelize.fn('lower', sequelize.col(column)),
         sequelize.fn('lower', value)
     )
 }
 
+const lowerLike = (column, value) => {
+    return sequelize.where(sequelize.fn('LOWER', sequelize.col(column)), 'LIKE', `%${value}%`)
+}
+
 module.exports = {
     instance: sequelize,
     User,
     Github,
-    whereLower
+    whereLower,
+    lowerLike
 }

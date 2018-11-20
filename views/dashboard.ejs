@@ -24,7 +24,7 @@
   </div>
 
   <% if (gitUser) { %>
-  <h2 class="h2 mt-5 mb-4">Your repositories</h2>
+  <h2 class="h2 mt-5 mb-4">Your repositories <small>(<%= gitUserRepos.length %>)</small></h2>
   <div class="row">
     <% for(const repo of gitUserRepos) { %>
     <% include ./partials/repo_card %>
