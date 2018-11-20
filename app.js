@@ -30,9 +30,7 @@ app.use(session(
 
 // Add flash messages on all routes
 app.use((req, res, next) => {
-  console.log("called")
   res.locals.flash = flash(req);
-  console.log(res.locals.flash);
   next();
 });
 

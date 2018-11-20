@@ -17,7 +17,15 @@ const sequelize = new Sequelize('database', 'username', 'password', {
 });
 const User = sequelize.define('user', UserModel)
 
+function whereLower(column, value) {
+    return sequelize.where(
+        sequelize.fn('lower', sequelize.col(column)),
+        sequelize.fn('lower', value)
+    )
+}
+
 module.exports = {
     instance: sequelize,
-    User
+    User,
+    whereLower
 }

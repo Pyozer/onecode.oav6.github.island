@@ -4,34 +4,37 @@ const { Op } = require('sequelize')
 const { setFlash, flash } = require('../utils/flash')
 const authRouter = express.Router();
 
-authRouter.get('/login', (req, res) => {
+authRouter.get('/signIn', (req, res) => {
   if (req.session.user) {
     res.redirect('/dashboard')
     return;
   }
 
-  res.render('login', { title: "Login" })
+  res.render('signIn', { title: "Sign In" })
   req.session.errorMsg = null
 })
 
-authRouter.post('/login', async (req, res) => {
+authRouter.post('/signIn', async (req, res) => {
   const nickname = req.body.nickname
   const password = req.body.password
 
   if (!nickname || !password) {
     setFlash(req, 'danger', 'You must fill all input fields !')
-    res.redirect('/login')
+    res.redirect('/signIn')
     return;
   }
 
   const user = await Database.User.findOne({
-    where: { 'nickname': nickname, 'password': password },
+    where: {
+      $col: Database.whereLower('nickname', nickname),
+      password: password,
+    },
     attributes: ['id', 'nickname', 'email', 'password', 'fullname']
   })
 
   if (!user) {
     setFlash(req, 'danger', 'Nickname or password is incorrect !')
-    res.redirect('/login')
+    res.redirect('/signIn')
     return;
   }
   req.session.user = user
@@ -39,17 +42,17 @@ authRouter.post('/login', async (req, res) => {
   res.redirect('/dashboard')
 })
 
-/* GET register page */
-authRouter.get('/register', (req, res) => {
+/* GET signUp page */
+authRouter.get('/signUp', (req, res) => {
   if (req.session.user) {
     res.redirect('/dashboard')
     return;
   }
 
-  res.render('register', { title: "Register" })
+  res.render('signUp', { title: "Sign Up" })
 })
 
-authRouter.post('/register', async (req, res) => {
+authRouter.post('/signUp', async (req, res) => {
   const user = {
     nickname: req.body.nickname,
     email: req.body.email,
@@ -59,14 +62,12 @@ authRouter.post('/register', async (req, res) => {
 
   if (!user.nickname || !user.email || !user.password || !user.fullname) {
     setFlash(req, 'danger', 'You must fill all input fields !')
-    res.redirect('/register')
+    res.redirect('/signUp')
     return;
   }
 
-  const isNickname = await Database.User.findOne({ where: { 'nickname': user.nickname } })
-  const isEmail = await Database.User.findOne({ where: { 'email': user.email } })
-  console.log(isNickname)
-  console.log(isEmail)
+  const isNickname = await Database.User.findOne({ where: { $col: Database.whereLower('nickname', user.nickname) } })
+  const isEmail = await Database.User.findOne({ where: { $col: Database.whereLower('email', user.email) } })
 
   if (isNickname || isEmail) {
     if (isNickname && isEmail)
@@ -76,7 +77,7 @@ authRouter.post('/register', async (req, res) => {
     else
       setFlash(req, 'danger', 'A user with the same nickname already exists !')
 
-    res.redirect('/register')
+    res.redirect('/signUp')
     return;
   }
 
@@ -90,7 +91,7 @@ authRouter.post('/register', async (req, res) => {
 
   req.session.user = user
 
-  setFlash(req, 'success', 'You have been successfully registered.')
+  setFlash(req, 'success', 'You have been successfully signUped.')
   res.redirect('/dashboard')
 })
 
@@ -99,7 +100,7 @@ authRouter.get('/logout', function (req, res, next) {
     req.session.user = null
     setFlash(req, 'success', 'You have been successfully disconnected.')
   }
-  res.redirect('/login')
+  res.redirect('/signIn')
 })
 
 module.exports = authRouter

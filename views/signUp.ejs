@@ -2,11 +2,11 @@
 <section class="hero is-fullheight is-dark">
     <div class="hero-body columns">
         <div class="column has-text-centered is-4 is-offset-4">
-            <h1 class="title is-2">Login</h1>
+            <h1 class="title is-2">Sign Up</h1>
 
             <% include ./partials/message_flash %>
 
-            <form action="/login" method="POST">
+            <form action="/signUp" method="POST">
                 <div class="field">
                     <div class="control has-text-centered">
                         <input class="input is-rounded" type="text" name="nickname" placeholder="Nickname" />
@@ -14,7 +14,17 @@
                 </div>
                 <div class="field">
                     <div class="control has-text-centered">
+                        <input class="input is-rounded" type="email" name="email" placeholder="Email" />
+                    </div>
+                </div>
+                <div class="field">
+                    <div class="control has-text-centered">
                         <input class="input is-rounded" type="password" name="password" placeholder="Password" />
+                    </div>
+                </div>
+                <div class="field">
+                    <div class="control has-text-centered">
+                        <input class="input is-rounded" type="text" name="fullname" placeholder="Fullname" />
                     </div>
                 </div>
                 <br />
@@ -23,8 +33,8 @@
                 </div>
             </form>
             <br />
-            <span>Do don't have an account ? </span>
-            <a href="/register" type="button"><u>Register</u></a>
+            <span>You already have an account ? </span>
+            <a href="/signIn" type="button"><u>Sign In</u></a>
         </div>
     </div>
 </section>
