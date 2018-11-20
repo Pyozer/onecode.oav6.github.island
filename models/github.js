@@ -1,9 +1,10 @@
 const { STRING } = require('sequelize')
 
 const GithubModel = {
-    avatar_ul: STRING,
+    login: STRING,
+    avatar_url: STRING,
     url: STRING,
-    ompany: STRING,
+    company: STRING,
     location: STRING,
     bio: STRING,
     followers: STRING,

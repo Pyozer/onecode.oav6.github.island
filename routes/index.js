@@ -1,5 +1,6 @@
 const express = require('express');
 const request = require('request-promise-native')
+const Database = require('../data/database')
 const { GITHUB_API_KEY } = require('../api_keys')
 const { setFlash } = require('../utils/flash')
 const router = express.Router();
@@ -31,7 +32,11 @@ router.get('/dashboard', async (req, res, next) => {
     resultUser = await request(options)
     options.uri += '/repos'
     resultUserRepos = await request(options)
-  } catch (_) {}
+
+    await Database.Github.upsert(resultUser, {
+        where: { 'login': resultUser.login }
+      })
+  } catch (_) { }
 
   res.render('dashboard', { title: 'Dashboard', user: req.session.user, gitUser: resultUser, gitUserRepos: resultUserRepos });
 });
