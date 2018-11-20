@@ -95,7 +95,7 @@ authRouter.post('/signUp', async (req, res) => {
   res.redirect('/dashboard')
 })
 
-authRouter.get('/logout', function (req, res, next) {
+authRouter.get('/logout', (req, res, next) => {
   if (req.session.user) {
     req.session.user = null
     setFlash(req, 'success', 'You have been successfully disconnected.')

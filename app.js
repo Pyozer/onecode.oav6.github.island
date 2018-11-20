@@ -40,12 +40,12 @@ app.use('/', authRouter)
 app.use('/', searchRouter)
 
 // catch 404 and forward to error handler
-app.use(function (req, res, next) {
+app.use((req, res, next) => {
   next(createError(404))
 })
 
 // error handler
-app.use(function (err, req, res, next) {
+app.use((err, req, res, next) => {
   // render the error page
   res.status(err.status || 500)
   res.render('error', { title: `${err.status} | ${err.message}`, err: err })
