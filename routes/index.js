@@ -5,8 +5,7 @@ const { GITHUB_API_KEY } = require('../api_keys')
 const { setFlash } = require('../utils/flash')
 const router = express.Router();
 
-/* GET home page. */
-router.get('/', function (req, res, next) {
+router.get('/', (req, res, next) => {
   res.redirect(req.session.user ? '/dashboard' : '/signIn')
 });
 
@@ -32,10 +31,15 @@ router.get('/dashboard', async (req, res, next) => {
     resultUser = await request(options)
     options.uri += '/repos'
     resultUserRepos = await request(options)
+    resultUserRepos.sort((a, b) => {
+      const dateA = new Date(a.updated_at).getTime();
+      const dateB = new Date(b.updated_at).getTime();
+      return dateA > dateB ? -1 : 1;
+    })
 
     await Database.Github.upsert(resultUser, {
-        where: { 'login': resultUser.login }
-      })
+      where: { 'login': resultUser.login }
+    })
   } catch (_) { }
 
   res.render('dashboard', { title: 'Dashboard', user: req.session.user, gitUser: resultUser, gitUserRepos: resultUserRepos });
