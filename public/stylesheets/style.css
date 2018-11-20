@@ -1,0 +1,19 @@
+form .input {
+    max-width: 350px;
+}
+h1.title, #result {
+    margin-bottom: 50px!important;
+}
+
+.danger {
+    color: red
+}
+.success {
+    color: green
+}
+.info {
+    color: lightblue
+}
+.warning {
+    color: yellow
+}

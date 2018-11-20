@@ -1,0 +1,11 @@
+<% include ./partials/header %>
+
+<section class="container is-fullheight is-dark">
+  <h1 class="title is-2">Welcome <%= user.nickname %> !</h1>
+
+  <% include ./partials/message_flash %>
+
+  <a type="button" class="button is-rounded" href="/logout">Logout</a>
+</section>
+
+<% include ./partials/footer %>
