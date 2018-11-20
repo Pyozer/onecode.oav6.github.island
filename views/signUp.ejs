@@ -1,41 +1,33 @@
 <% include ./partials/header %>
-<section class="hero is-fullheight is-dark">
-    <div class="hero-body columns">
-        <div class="column has-text-centered is-4 is-offset-4">
-            <h1 class="title is-2">Sign Up</h1>
+
+<div class="container h-100">
+    <div class="row h-100 justify-content-center align-items-center">
+        <div class="col-12 col-sm-8 col-lg-5 text-center">
+            <h1 class="h1 mb-5">Sign Up</h1>
 
             <% include ./partials/message_flash %>
 
             <form action="/signUp" method="POST">
-                <div class="field">
-                    <div class="control has-text-centered">
-                        <input class="input is-rounded" type="text" name="nickname" placeholder="Nickname" />
-                    </div>
+                <div class="form-group">
+                    <input type="text" class="form-control is-rounded" name="nickname" placeholder="Nickname" required>
                 </div>
-                <div class="field">
-                    <div class="control has-text-centered">
-                        <input class="input is-rounded" type="email" name="email" placeholder="Email" />
-                    </div>
+                <div class="form-group">
+                    <input type="email" class="form-control is-rounded" name="email" placeholder="Email" required>
                 </div>
-                <div class="field">
-                    <div class="control has-text-centered">
-                        <input class="input is-rounded" type="password" name="password" placeholder="Password" />
-                    </div>
+                <div class="form-group">
+                    <input type="password" class="form-control is-rounded" name="password" placeholder="Password" required>
                 </div>
-                <div class="field">
-                    <div class="control has-text-centered">
-                        <input class="input is-rounded" type="text" name="fullname" placeholder="Fullname" />
-                    </div>
+                <div class="form-group">
+                    <input type="text" class="form-control is-rounded" name="fullname" placeholder="Fullname" required>
                 </div>
-                <br />
-                <div class="control has-text-centered">
-                    <input type="submit" class="button is-primary is-rounded" value="Submit" />
-                </div>
+                <input type="submit" class="btn btn-outline-primary is-rounded mt-3 px-4" value="Submit" />
             </form>
-            <br />
-            <span>You already have an account ? </span>
-            <a href="/signIn" type="button"><u>Sign In</u></a>
+            <div class="mt-5">
+                <span>You already have an account ? </span>
+                <a href="/signIn" class="mt-3">Sign In</a>
+            </div>
         </div>
     </div>
-</section>
+</div>
+
 <% include ./partials/footer %>
